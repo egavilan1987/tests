@@ -44,25 +44,19 @@
 				<select name='producto'>
 				<?php
 
-				$sql2 = "SELECT id_producto, nombre 
+				$sql2 = "SELECT id_producto, nombre, precio, cantidad 
 				FROM productos";
 				$result2 = mysqli_query($conn, $sql2);
 				while ($producto = mysqli_fetch_row($result2)):
 					?>
-					<option value="<?php echo $producto[0] ?>"><?php echo $producto[1] ?></option>
+					<option value="<?php echo $producto[0] ?>"><?php echo "Nombre --> ".$producto[1]  ." | Precio --> ".$producto[2] ." | Cantidad --> ".$producto[3]?></option>
 				<?php endwhile; ?>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td align='right'>Cantidad :</td>
-			<td><input type='number' name='cantidad' required>
-			</font>
-			</td>
-		</tr>
-		<tr>
-			<td align='right'>Precio: </td>
-			<td><input type='number' name='precio' required step=".01">
+			<td><input type='number' name='cantidad' min = 1 required>
 			</font>
 			</td>
 		</tr>
@@ -89,34 +83,63 @@ if(isset($_POST['submit']))
 {
 	 $id_cliente = $_POST['cliente'];
 	 $id_producto = $_POST['producto'];
-	 $precio = $_POST['precio'];
-	 $cantidad = $_POST['cantidad'];
-	 $total = $precio * $cantidad;
-
-$sql = "INSERT INTO ventas(id_cliente, id_producto, cantidad, total) VALUES('$id_cliente', '$id_producto','$cantidad','$total')";
-$query=mysqli_query($conn,$sql);
+	 $precio = 10;
+	 $cantidad = $_POST['cantidad'];	 
 
 
-if($query){
-		echo "<center><b>Nueva Venta Registrada:</b></center><br>";
-		echo 
-		"<table align='center' border='4'>
-			</tr>
-			<tr bgcolor='DodgerBlue' align='center'>
-				<th>Cliente</th>
-				<th>Producto</th>
-				<th>Precio</th>
-				<th>Cantidad</th>
-				<th>Total</th>
-			</tr>
-			<tr>
-				<td>$id_cliente</td>
-				<td>$id_producto</td>
-				<td>$precio</td>
-				<td>$cantidad</td>
-				<td>$total</td>
-			</tr>
-		</table>";
+
+$sql2 = "SELECT nombre FROM clientes WHERE id_cliente = '$id_cliente'";
+$result = mysqli_query($conn, $sql2);
+$row2 = mysqli_fetch_row($result);
+$cliente_nombre = $row2[0];
+
+$sql3 = "SELECT nombre, precio, cantidad FROM productos WHERE id_producto = '$id_producto'";
+$result2 = mysqli_query($conn, $sql3);
+$row3 = mysqli_fetch_row($result2);
+
+$producto_nombre = $row3[0];
+$producto_precio = $row3[1];
+$producto_cantidad = $row3[2];
+$producto_almacen = $producto_cantidad - $cantidad;
+
+$total = $producto_precio * $cantidad;
+
+	if ($producto_cantidad < $cantidad){
+		echo "La cantidad del producto en el almacen es menor que la registrada en la venta.";
+
+	}else {
+
+		//Insertar nueva venta.
+		$sql = "INSERT INTO ventas(id_cliente, id_producto, cantidad, total) VALUES('$id_cliente', '$id_producto','$cantidad','$total')";
+		$query=mysqli_query($conn,$sql);
+
+		//Actualizar cantidad de productos.
+
+		$sql1 = "UPDATE productos set cantidad = '$producto_almacen' WHERE id_producto = '$id_producto'";
+		$query1=mysqli_query($conn,$sql1);
+
+
+		if($query){
+				echo "<center><b>Nueva Venta Registrada:</b></center><br>";
+				echo 
+				"<table align='center' border='4'>
+					</tr>
+					<tr bgcolor='DodgerBlue' align='center'>
+						<th>Cliente</th>
+						<th>Producto</th>
+						<th>Precio</th>
+						<th>Cantidad</th>
+						<th>Total</th>
+					</tr>
+					<tr>
+						<td>$cliente_nombre</td>
+						<td>$producto_nombre</td>
+						<td>$producto_precio</td>
+						<td>$cantidad</td>
+						<td>$total</td>
+					</tr>
+				</table>";
+				}
 		}
 	}
 ?>

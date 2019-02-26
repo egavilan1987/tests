@@ -28,13 +28,13 @@
 		</tr>
 		<tr>
 			<td align='right'>Cantidad :</td>
-			<td><input type='number' name='cantidad' required>
+			<td><input type='number' name='cantidad' min = 0 required>
 			</font>
 			</td>
 		</tr>
 		<tr>
 			<td align='right'>Precio: </td>
-			<td><input type='number' name='precio' required step=".01">
+			<td><input type='number' name='precio' min = 0 required step=".01">
 			</font>
 			</td>
 		</tr>

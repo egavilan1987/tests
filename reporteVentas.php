@@ -56,14 +56,14 @@
 			<td>
 				<?php 
 					$id_producto = $row['id_producto'];
-					$sql2 = "SELECT nombre FROM productos WHERE id_producto = '$id_producto'";
+					$sql2 = "SELECT nombre, precio FROM productos WHERE id_producto = '$id_producto'";
 					$result2=mysqli_query($conn,$sql2);
 					$row3=mysqli_fetch_row($result2);
 
 					echo $row3[0];
 				?>
 			</td>
-			<td><?php echo $row['cantidad']; ?></td>
+			<td><?php echo $row3[1]; ?></td>
 			<td><?php echo $row['cantidad']; ?></td>
 			<td><?php echo $row['total']; ?></td>
 			</tr>
