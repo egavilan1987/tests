@@ -21,11 +21,3 @@ create table clientes(
 				primary key(id_cliente)
 					);
 
-create table ventas(
-				id_venta int not null auto_increment,
-				id_cliente int,
-				id_producto int,
-				cantidad int,
-				total float,
-				primary key(id_venta)
-					);
