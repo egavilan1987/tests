@@ -8,7 +8,7 @@
 		<table align = 'center' border = '2' width = '500'>
         	<tr  align = 'center' bgcolor = 'dodgerBlue'>
             	<th colspan = '2'>
-                	<h5>Products Registration</h5>
+                	Products Registration
                 </th>
             </tr>
             <tr>
